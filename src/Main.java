@@ -6,38 +6,35 @@ public class Main {
     Customer currentCus;
 
     {
-        currentCus = new Customer("none","none","none","0","none","none");
+        currentCus = new Customer("none","none","none","0","none","none","none");
     }
 
-//    public void run() {
-//        Scanner scan = new Scanner("item.txt");
-//        Scanner input = new Scanner(System.in);
-//        String user = scan.nextLine();
-//        String pass = scan.nextLine();
-//
-//        String inpUser = input.nextLine();
-//        String inpPass = input.nextLine();
-//
-//        if (inpUser.equals(user) && inpPass.equals(pass)) {
-//            System.out.println("login complete");
-//        } else {
-//            System.out.println("error");
-//        }
-//    }
-
     void listAll() throws IOException {
-        Scanner all = new Scanner(new File("items.txt"));
+        //create a bufferedReader and user scanner
+        BufferedReader br = new BufferedReader(new FileReader("items.txt"));
         Scanner sc = new Scanner(System.in);
-        while (all.hasNext()) {
-
-            System.out.println(all.nextLine());
+        List lines = new ArrayList();
+        //create a 2D arrayList and append each line of the txt file into a sub-array in the 2D array
+        for(String line = br.readLine(); line != null; line = br.readLine()){
+            String[] currentLine = line.split(",");
+            lines.add(currentLine);
         }
+        String[][] strings = (String[][]) lines.toArray(new String[lines.size()][]);
+//        System.out.println(strings);
 
+        //loop through the 2D array and display the product on CLI
+        for(int i = 0; i < strings.length; i++){
+            for(int j = 0; j < strings[i].length; j++){
+                System.out.print(strings[i][j] + " | ");
+            }
+            System.out.println("\n");
+        }
+        //A pause statement to give the user some space to read message above
             String input = "";
             while (!"next".equals(input)) {
                 System.out.println("\n Type (next) to return to the menu");
                 input = sc.nextLine();
-//                System.out.println(input);
+
             }
             menu();
         }
@@ -141,7 +138,7 @@ public class Main {
                     String[] currentUser = currentLine.split(",");
                     List<String> currentUserString = Arrays.asList(currentUser);
                     ArrayList<String> UserString = new ArrayList<String>(currentUserString);
-                  currentCus.reAssign(UserString.get(0), UserString.get(1), UserString.get(2), UserString.get(3), UserString.get(4), UserString.get(5));
+                  currentCus.reAssign(UserString.get(0), UserString.get(1), UserString.get(2), UserString.get(3), UserString.get(4), UserString.get(5),UserString.get(6));
                     System.out.println(currentCus);
 
                     //A pause statement to give the user some space to read message above

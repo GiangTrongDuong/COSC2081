@@ -4,6 +4,6 @@ public class admin {
     public void admin(int id, String password){
         this.id = id;
         this.password = password;
-
+        
     }
 }
