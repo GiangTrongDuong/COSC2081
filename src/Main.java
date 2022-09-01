@@ -25,7 +25,7 @@ public class Main {
         //loop through the 2D array and display the product on CLI
         for(int i = 0; i < strings.length; i++){
             for(int j = 0; j < strings[i].length; j++){
-                System.out.print(strings[i][j] + " | ");
+                System.out.println(strings[i][j] + " | ");
             }
             System.out.println("\n");
         }
@@ -39,10 +39,34 @@ public class Main {
             menu();
         }
 
-        void sortPrice () {
+        void sortPrice () throws IOException {
+            //create a bufferedReader and user scanner
+            BufferedReader br = new BufferedReader(new FileReader("items.txt"));
+            Scanner sc = new Scanner(System.in);
+            List lines = new ArrayList();
+            //create a 2D arrayList and append each line of the txt file into a sub-array in the 2D array
+            for(String line = br.readLine(); line != null; line = br.readLine()){
+                String[] currentLine = line.split(",");
+                lines.add(currentLine);
+            }
 
+            String[][] strings = (String[][]) lines.toArray(new String[lines.size()][]);
+
+            System.out.println("Sort by price, please choose between highest to lowest or lowest to highest");
+            System.out.println("Input 1 for high to low, 2 for low to high");
+            int intInput = sc.nextInt(); //
+
+            for(int i = 0; i < strings.length; i++){
+                    if(intInput == 1){
+                        Arrays.sort(strings[i][2]);
+                }
+                System.out.println("\n");
+            }
         }
 
+        void sortCart(){
+
+        }
         void register () throws IOException {
             //create Scanner object for input and reader
             Scanner sc = new Scanner(System.in);
@@ -86,14 +110,15 @@ public class Main {
         }
 
         boolean login() throws IOException {
+            //Function to take in customer input and  read file "customer.txt"
             File file = new File("customers.txt");
             Scanner scf = new Scanner(file);
             Scanner inp = new Scanner(System.in);
-
+            //Create value that will be use in the loop
             boolean isCorrect = false;
             boolean passCorrect = false;
             String currentLine = null;
-
+            //Loop to check for username input of user
             while (isCorrect == false) {
                 System.out.println("Insert VALID username");
                 String inputUser = inp.nextLine();
@@ -122,6 +147,7 @@ public class Main {
 
                 System.out.println("Please insert your password");
                 String inputPass = inp.nextLine();
+                //Loop to check for password input of user
                 while (passCorrect == false) {
                     if (currentLine.contains(inputPass)) {
 //                        System.out.println(currentLine);
@@ -134,7 +160,9 @@ public class Main {
                     }
                 }
 
+                //Loop to check if both username and password match
                 if(isCorrect == true && passCorrect == true){
+                    //Return the line from "customer.txt" according to login info and append it into array list
                     String[] currentUser = currentLine.split(",");
                     List<String> currentUserString = Arrays.asList(currentUser);
                     ArrayList<String> UserString = new ArrayList<String>(currentUserString);
@@ -157,26 +185,35 @@ public class Main {
 
         void menu () throws IOException {
             Scanner kb = new Scanner(System.in);
-
+            //Print out the information of Group name, number, student name and ID, lecturer name.
             System.out.println("COSC2081 GROUP ASSIGNMENT ");
             System.out.println("STORE ORDER MANAGEMENT SYSTEM");
             System.out.println("Instructor: Mr. Minh Vu");
             System.out.println("Group: 12");
             System.out.println("s3926135, Giang Trong Duong");
-
-            if(isLoggedIn == true){
+            System.out.println("s3926369, Tran Gia Hung");
+            System.out.println("s3926016, Truong Adam Nhat Anh");
+            System.out.println("s, ");
+            //Check whether user has logged in. If logged in the user will be greeted with message bellow + custom menu.
+            if(isLoggedIn){
                 System.out.println("\nWelcome " +currentCus.name + ",you are now logged in as " + currentCus.username);
-//                System.out.println(isLoggedIn);
             }
-
-            System.out.println("\nPlease choose one of these option"
-                    + "\n\t1. List all Products" + "\n\t2. Sort by price" + "\n\t3. Sort by category" + "\n\t4. Register" + "\n\t5. Login");
+            //Print out menu interface to console
+            System.out.println("""
+                    \nPlease choose one of these option (insert number bellow according to selection)
+                    \t1. List all Products
+                    \t2. Sort by price
+                    \t3. Sort by category
+                    \t4. Register
+                    \t5. Login""");
             byte ch = kb.nextByte();
 
             if (ch == 1) {
                 listAll();
             } else if (ch == 2) {
                 sortPrice();
+            }else if (ch == 3) {
+                sortCart();
             } else if (ch == 4) {
                 register();
             } else if (ch == 5) {

@@ -10,6 +10,7 @@ public class product {
         this.price = price;
         this.category = category;
     }
+
     public String toString() {
         return String.format("ID: %d\r\nTitle: %s\r\nPrice %s\r\nCategory %d\r\n",
                 this.ID, this.title, this.price, this.category);
