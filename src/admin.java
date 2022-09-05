@@ -11,18 +11,8 @@ public class admin {
 
     }
 
-
-    public void addItems {
-        Scanners sc = new Scanner(System.in);
-
-    }
-
-    public void removeItems {
-
-        }
-
     @Override
-    public String toString(String){
+    public String toString(){
         return "Admin username: " + admin_username +
                 "Admin password " + admin_password;
     }

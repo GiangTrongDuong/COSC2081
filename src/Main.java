@@ -39,6 +39,8 @@ public class Main {
             menu();
         }
 
+
+
         void sortPrice () throws IOException {
             //create a bufferedReader and user scanner
             BufferedReader br = new BufferedReader(new FileReader("items.txt"));
@@ -56,12 +58,18 @@ public class Main {
             System.out.println("Input 1 for high to low, 2 for low to high");
             int intInput = sc.nextInt(); //
 
+            int col = 2;
+
+
             for(int i = 0; i < strings.length; i++){
-                    if(intInput == 1){
-                        Arrays.sort(strings[i][2]);
+                for(int j = 0; j < strings[i].length; j++){
+                    System.out.println(strings[i][j] + " | ");
                 }
                 System.out.println("\n");
             }
+
+
+
         }
 
         void sortCart(){
@@ -93,7 +101,7 @@ public class Main {
             String password = sc.nextLine();
             //PrintWriter function to write to customer.txt
             PrintWriter pw = new PrintWriter(new FileOutputStream(customer, true));
-            pw.append("COO" + numID + "," + name + "," + address + "," + phone + ",Regular" + ", " + userName + ", " + password);
+            pw.append("\nCOO" + numID + "," + name + "," + address + "," + phone + ",Regular" + ", " + userName + ", " + password);
             pw.close();
 
 
@@ -109,6 +117,19 @@ public class Main {
 
         }
 
+        void viewInfo() throws IOException {
+            Scanner inp = new Scanner(System.in);
+            System.out.println("Customer Info" +
+                    "\n Name: " + currentCus.name
+                    + "\n ID: " + currentCus.cid
+                    + "\n Registered Address: " + currentCus.address
+                    + "\n Phone number: " + currentCus.phoneNum
+                    + "\n Membership Tier: " + currentCus.memberTier);
+            System.out.println("\nPress enter to continue");
+            String enter = inp.nextLine();
+            menu();
+        }
+
         boolean login() throws IOException {
             //Function to take in customer input and  read file "customer.txt"
             File file = new File("customers.txt");
@@ -119,11 +140,11 @@ public class Main {
             boolean passCorrect = false;
             String currentLine = null;
             //Loop to check for username input of user
-            while (isCorrect == false) {
+            while (!isCorrect) {
                 System.out.println("Insert VALID username");
                 String inputUser = inp.nextLine();
                 String lineInFile = scf.nextLine();
-                while (isCorrect == false) {
+                while (!isCorrect) {
                     if (lineInFile.contains(inputUser)) {
 //                        System.out.println(lineInFile);
                         System.out.println("correct username");
@@ -148,7 +169,7 @@ public class Main {
                 System.out.println("Please insert your password");
                 String inputPass = inp.nextLine();
                 //Loop to check for password input of user
-                while (passCorrect == false) {
+                while (!passCorrect) {
                     if (currentLine.contains(inputPass)) {
 //                        System.out.println(currentLine);
                         System.out.println("Correct password, logged in");
@@ -161,13 +182,12 @@ public class Main {
                 }
 
                 //Loop to check if both username and password match
-                if(isCorrect == true && passCorrect == true){
+                if(isCorrect  && passCorrect){
                     //Return the line from "customer.txt" according to login info and append it into array list
                     String[] currentUser = currentLine.split(",");
                     List<String> currentUserString = Arrays.asList(currentUser);
                     ArrayList<String> UserString = new ArrayList<String>(currentUserString);
                   currentCus.reAssign(UserString.get(0), UserString.get(1), UserString.get(2), UserString.get(3), UserString.get(4), UserString.get(5),UserString.get(6));
-                    System.out.println(currentCus);
 
                     //A pause statement to give the user some space to read message above
                     System.out.println("Press enter to continue");
@@ -183,8 +203,15 @@ public class Main {
                 return isLoggedIn;
         }
 
+        void logout() throws IOException{
+        currentCus.reAssign("none","none","none","0","none","none","none");
+        isLoggedIn = false;
+        menu();
+        }
+
         void menu () throws IOException {
             Scanner kb = new Scanner(System.in);
+
             //Print out the information of Group name, number, student name and ID, lecturer name.
             System.out.println("COSC2081 GROUP ASSIGNMENT ");
             System.out.println("STORE ORDER MANAGEMENT SYSTEM");
@@ -193,37 +220,70 @@ public class Main {
             System.out.println("s3926135, Giang Trong Duong");
             System.out.println("s3926369, Tran Gia Hung");
             System.out.println("s3926016, Truong Adam Nhat Anh");
-            System.out.println("s, ");
+
             //Check whether user has logged in. If logged in the user will be greeted with message bellow + custom menu.
             if(isLoggedIn){
                 System.out.println("\nWelcome " +currentCus.name + ",you are now logged in as " + currentCus.username);
-            }
-            //Print out menu interface to console
-            System.out.println("""
+                //Print out menu interface for logged-in user
+                System.out.println("""
+                    \nPlease choose one of these option (insert number bellow according to selection)
+                    \t1. List all Products
+                    \t2. Sort by price
+                    \t3. Sort by category
+                    \t4. View information
+                    \t5. Logout""");
+                byte ch = kb.nextByte();
+                if (ch == 1) {
+                    listAll();
+                } else if (ch == 2) {
+                    sortPrice();
+                }else if (ch == 3) {
+                    sortCart();
+                } else if (ch == 4) {
+                    viewInfo();
+                } else if (ch == 5) {
+                    logout();
+                } else {
+                    System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
+                    menu();
+                }
+//                }else if(){
+
+                }else {
+                    //Print out menu interface for user not logged in
+                    System.out.println("""
                     \nPlease choose one of these option (insert number bellow according to selection)
                     \t1. List all Products
                     \t2. Sort by price
                     \t3. Sort by category
                     \t4. Register
                     \t5. Login""");
-            byte ch = kb.nextByte();
 
-            if (ch == 1) {
-                listAll();
-            } else if (ch == 2) {
-                sortPrice();
-            }else if (ch == 3) {
-                sortCart();
-            } else if (ch == 4) {
-                register();
-            } else if (ch == 5) {
-                login();
-            } else {
-                System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
-                menu();
+                    byte ch = kb.nextByte();
+                    if (ch == 1) {
+                        listAll();
+                    } else if (ch == 2) {
+                        sortPrice();
+                    }else if (ch == 3) {
+                        sortCart();
+                    } else if (ch == 4) {
+                        register();
+                    } else if (ch == 5) {
+                        login();
+                    } else {
+                        System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
+                        menu();
+                    }
+                }
+
             }
-        }
+            //Print out menu interface to console
 
+
+
+        void menuAdmin() throws IOException{
+
+        }
 
         public static void main (String[]args) throws IOException {
             Main program = new Main();
