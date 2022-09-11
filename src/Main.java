@@ -106,13 +106,13 @@ public class Main {
                 }else if (ch == 3) {
                     sortCart();
                 } else if (ch == 4) {
-                    member.viewInfo();
+                    currentCus.viewInfo();
                 } else if (ch == 5) {
                     currentCus.logout();
                 } else if (ch == 6) {
                     currentMem.registerMemberShip();
                 } else {
-                    System.out.println("===============================" + "\n====Invalid Input, re-Enter====" + "\n===============================");
+                    System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
                     menu();
                 }
 //                }else if(){
@@ -140,7 +140,7 @@ public class Main {
                     } else if (ch == 5) {
                         currentCus.login();
                     } else {
-                        System.out.println("===============================" + "\n====Invalid Input, re-Enter====" + "\n===============================");
+                        System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
                         menu();
                     }
                 }

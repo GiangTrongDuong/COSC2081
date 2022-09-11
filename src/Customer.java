@@ -2,13 +2,13 @@ import java.io.*;
 import java.util.*;
 
 public class Customer {
-    protected static String cid;
-    protected static String name;
-    protected static String address;
-    protected static int phoneNum;
-    protected static String memberTier;
-    protected static String username;
-    protected static String password;
+    protected String cid;
+    protected String name;
+    protected String address;
+    protected int phoneNum;
+    protected String memberTier;
+    protected String username;
+    protected String password;
     protected boolean isLoggedIn = false;
 
     public void setLoggedIn(boolean loggedIn) {
@@ -16,24 +16,24 @@ public class Customer {
     }
 
     public Customer() {
-        cid = "none";
-        name = "none";
-        address = "none";
-        phoneNum = 0;
-        memberTier = "none";
-        username = "none";
-        password = "none";
+        this.cid = "none";
+        this.name = "none";
+        this.address = "none";
+        this.phoneNum = 0;
+        this.memberTier = "none";
+        this.username = "none";
+        this.password = "none";
     }
 
     public Customer(String cid, String name, String address,
                     String phoneNum, String memberTier, String username, String password) {
-        Customer.cid = cid;
-        Customer.name = name;
-        Customer.address = address;
-        Customer.phoneNum = Integer.parseInt(phoneNum);
-        Customer.memberTier = memberTier;
-        Customer.username = username;
-        Customer.password = password;
+        this.cid = cid;
+        this.name = name;
+        this.address = address;
+        this.phoneNum = Integer.parseInt(phoneNum);
+        this.memberTier = memberTier;
+        this.username = username;
+        this.password = password;
     }
 
 //    public static void reAssign(String s, String s1, String s2, String s3, String s4, String s5, String s6){
@@ -60,13 +60,12 @@ public class Customer {
     void register() throws IOException {
         //create Scanner object for input and reader
         Scanner sc = new Scanner(System.in);
-        File file = new File("customers.txt");
-        Scanner customer = new Scanner(file);
-
+        Scanner file = new Scanner(new File("customers.txt"));
+        File customer = new File("customers.txt");
 
         int numID = 1;
-        while (customer.hasNextLine()) {
-            customer.nextLine();
+        while (file.hasNextLine()) {
+            file.nextLine();
             numID++;
         }
 
@@ -83,9 +82,8 @@ public class Customer {
         System.out.println("Please enter your password");
         String password = sc.nextLine();
         //PrintWriter function to write to customer.txt
-        PrintWriter pw = new PrintWriter(new FileOutputStream(file, true));
-        pw.append("\nCOO" + numID + "," + name + "," + address + "," + phone + ",Regular"
-                + "," + userName + "," + password);
+        PrintWriter pw = new PrintWriter(new FileOutputStream(customer, true));
+        pw.append("\nCOO" + numID + "," + name + "," + address + "," + phone + ",Regular" + ", " + userName + ", " + password);
         pw.close();
 
 
@@ -97,10 +95,25 @@ public class Customer {
             input = sc.nextLine();
 //                System.out.println(input);
         }
-        Main.menu();
+        Main main = new Main();
+        main.menu();
     }
 
-    void login() throws IOException {
+    void viewInfo() throws IOException {
+        Scanner inp = new Scanner(System.in);
+        System.out.println("Customer Info" +
+                "\n Name: " + name
+                + "\n ID: " + cid
+                + "\n Registered Address: " + address
+                + "\n Phone number: " + phoneNum
+                + "\n Membership Tier: " + memberTier);
+        System.out.println("\nPress enter to continue");
+        String enter = inp.nextLine();
+        Main main = new Main();
+        main.menu();
+    }
+
+    boolean login() throws IOException {
         //Function to take in customer input and  read file "customer.txt"
         File file = new File("customers.txt");
         Scanner scf = new Scanner(file);
@@ -166,20 +179,24 @@ public class Customer {
             System.out.println("Press Enter to continue");
             String enter = inp.nextLine();
             isLoggedIn = true;
-            Main.menu();
+            Main main = new Main();
+            main.menu();
             // give main a parameter
         }else {
             //A pause statement to give the user some space to read message above
             System.out.println("Press Enter to continue");
             String enter = inp.nextLine();
-            Main.menu();
+            Main main = new Main();
+            main.menu();
         }
+        return isLoggedIn;
     }
 
     void logout() throws IOException{
         new Customer();
         isLoggedIn = false;
-        Main.menu();
+        Main main = new Main();
+        main.menu();
     }
 
 
