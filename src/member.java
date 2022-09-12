@@ -63,7 +63,15 @@ public class member extends Customer{
                 case "gold" -> memberTier = "Gold";
                 case "platinum" -> memberTier = "Platinum";
             }
-            
+            // record specific data into array and then change then append back (stay at the same index)
+            // "https://www.youtube.com/watch?v=EfS6i_jAm4g" at 34 mins
+
+            // record all data into array, change it then re-append back (which means delete
+            // all then append)
+
+            // record specific data into array and then create brand new data array (new index)
+
+            // 
             Main.menu();
         }
         else {
