@@ -111,7 +111,7 @@ public class Main {
                 }else if (ch == 3) {
                     sortCart();
                 } else if (ch == 4) {
-                    currentCus.viewInfo();
+                    currentMem.viewInfo();
                 } else if (ch == 5) {
                     currentCus.logout();
                 } else if (ch == 6) {

@@ -2,7 +2,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Admin {
+class Admin {
     String admin_password = "admin";
     String admin_username = "root";
     private int id;

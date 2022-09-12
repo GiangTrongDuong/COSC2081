@@ -2,13 +2,13 @@ import java.io.*;
 import java.util.*;
 
 public class Customer {
-    protected String cid;
-    protected String name;
-    protected String address;
-    protected int phoneNum;
-    protected String memberTier;
-    protected String username;
-    protected String password;
+    protected static String cid;
+    protected static String name;
+    protected static String address;
+    protected static int phoneNum;
+    protected static String memberTier;
+    protected static String username;
+    protected static String password;
     protected boolean isLoggedIn = false;
 
     public void setLoggedIn(boolean loggedIn) {
@@ -99,19 +99,7 @@ public class Customer {
         main.menu();
     }
 
-    void viewInfo() throws IOException {
-        Scanner inp = new Scanner(System.in);
-        System.out.println("Customer Info" +
-                "\n Name: " + name
-                + "\n ID: " + cid
-                + "\n Registered Address: " + address
-                + "\n Phone number: " + phoneNum
-                + "\n Membership Tier: " + memberTier);
-        System.out.println("\nPress enter to continue");
-        String enter = inp.nextLine();
-        Main main = new Main();
-        main.menu();
-    }
+
 
     boolean login() throws IOException {
         //Function to take in customer input and  read file "customer.txt"

@@ -1,6 +1,7 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,19 +15,42 @@ public class member extends Customer{
 
     }
 
-    void registerMemberShip() throws FileNotFoundException {
-        Scanner checkfile = new Scanner(new File("customers.txt")).useDelimiter(",\\s");
-        String user = username;
+    void viewInfo() throws IOException {
+        String line = "";
+        String path = "customers.txt";
+        Scanner sc = new Scanner(new FileReader(path));
         List<String> list = new ArrayList<>();
-        while (checkfile.hasNextLine()) {
-            list.add(checkfile.nextLine());
+        Scanner user = new Scanner(System.in);
+        try {
+            while (sc.hasNextLine()) {
+                String data = sc.nextLine();
+                list.add(data);
+            }
             for (String s : list) {
                 String[] arr = s.split(",");
-                if (list.contains(user)) {
-                    String membership = list.get(4);
-                    System.out.println(membership);
+                String x = (String) Array.get(arr, 5);
+                String compare1 = x.trim();
+                String compare2 = username.trim();
+                if (compare1.equals(compare2)) {
+                    System.out.println("Customer Info" +
+                            "\n Name: " + name
+                            + "\n ID: " + cid
+                            + "\n Registered Address: " + address
+                            + "\n Phone number: " + phoneNum
+                            + "\n Membership Tier: " + memberTier);
+                    System.out.println("\nPress enter to continue");
+                    String enter = user.nextLine();
+                    Main.menu();
+                } else {
+                    continue;
                 }
             }
-        }
+        } catch (Exception ignored) {}
+    }
+
+
+    void registerMemberShip() throws IOException {
+        viewInfo();
+        
     }
 }
