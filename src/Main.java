@@ -4,6 +4,7 @@ import java.io.*;
 public class Main {
     static Customer currentCus = new Customer();
     static member currentMem = new member();
+    static Admin currentAd = new Admin();
 
     static void listAll() throws IOException {
         //create a bufferedReader and user scanner
@@ -21,7 +22,7 @@ public class Main {
         //loop through the 2D array and display the product on CLI
         for(int i = 0; i < strings.length; i++){
             for(int j = 0; j < strings[i].length; j++){
-                System.out.println(strings[i][j] + " | ");
+                System.out.print(strings[i][j] + " | ");
             }
             System.out.println("\n");
         }
@@ -57,16 +58,18 @@ public class Main {
             int col = 2;
 
 
-            for(int i = 0; i < strings.length; i++){
-                for(int j = 0; j < strings[i].length; j++){
-                    System.out.println(strings[i][j] + " | ");
-                }
-                System.out.println("\n");
-            }
+//            for(int i = 0; i < strings.length; i++){
+//                for(int j = 0; j < strings[i].length; j++){
+//                    System.out.print(strings[i][j] + " | ");
+//                }
+//                System.out.println("\n");
+//            }
+            
 
 
 
-        }
+
+    }
 
         static void sortCart(){
 
@@ -96,7 +99,9 @@ public class Main {
                     \t3. Sort by category
                     \t4. View information
                     \t5. Logout
-                    \t6. 
+                    \t6. Register membership
+                    \t7. Create order
+                    \t8. Check order status
                     Enter your choice: """);
                 byte ch = kb.nextByte();
                 if (ch == 1) {
@@ -126,6 +131,7 @@ public class Main {
                     \t3. Sort by category
                     \t4. Register
                     \t5. Login
+                    \t6. Login as Admin
                     Enter your choice: """);
 
                     byte ch = kb.nextByte();
@@ -139,6 +145,8 @@ public class Main {
                         currentCus.register();
                     } else if (ch == 5) {
                         currentCus.login();
+                    } else if (ch == 6) {
+                        currentAd.login();
                     } else {
                         System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
                         menu();
@@ -150,9 +158,33 @@ public class Main {
 
 
 
-        void menuAdmin() throws IOException{
+        static void menuAdmin() throws IOException{
+            Scanner kb = new Scanner(System.in);
+            System.out.println("""
+                    \nPlease choose one of these option (insert number bellow according to selection)
+                    \t1. Add new product
+                    \t2. Get order ID
+                    \t3. Change order status
+                    \t4. Update product price
+                    \t5. Logout
+                    Enter your choice: """);
+            byte ch = kb.nextByte();
+            if (ch == 1) {
+                product.addProduct();
+            } else if (ch == 2) {
 
+            }else if (ch == 3) {
+
+            } else if (ch == 4) {
+
+            } else if (ch == 5) {
+                menu();
+            } else {
+                System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
+                menu();
+            }
         }
+
 
         public static void main (String[]args) throws IOException {
             Main program = new Main();
