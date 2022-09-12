@@ -1,9 +1,6 @@
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class member extends Customer{
     public member(String cid, String name, String address,
@@ -50,7 +47,38 @@ public class member extends Customer{
 
 
     void registerMemberShip() throws IOException {
-        viewInfo();
-        
+        System.out.println("Your current member tier is " + memberTier);
+        Scanner sc = new Scanner(System.in);
+        String[] membership = {"Regular", "Silver", "Gold", "Platinum"};
+        System.out.println("Please choose between our membership package: " +
+                membership[0] + ", " + membership[1] + ", " + membership[2] +
+                ", " + membership[3]);
+        String input = ((sc.nextLine()).trim()).toLowerCase();
+        String check = memberTier.toLowerCase();
+        if (!input.equals(check)) {
+            System.out.println("You've just chosen " + input.toUpperCase() + " membership package!");
+            switch (input) {
+                case "regular" -> memberTier = "Regular";
+                case "silver" -> memberTier = "Silver";
+                case "gold" -> memberTier = "Gold";
+                case "platinum" -> memberTier = "Platinum";
+            }
+            
+            Main.menu();
+        }
+        else {
+            System.out.println("This is the membership package you have already chosen!" +
+                    " Please enter \"enter\" different packages or" +
+                    " \"exit\" if you changed your mind!");
+            String reenter = ((sc.nextLine()).trim()).toLowerCase();
+            if (reenter.equals("exit")) {
+                Main.menu();
+            } else if (reenter.equals("enter")) {
+                registerMemberShip();
+            } else {
+                System.out.println("Incorrect input");
+                registerMemberShip();
+            }
+        }
     }
 }
