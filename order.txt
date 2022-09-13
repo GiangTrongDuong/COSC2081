@@ -1,0 +1,5 @@
+OID-1, Marshall, 4, 24, unpaid, COO7
+OID-2, Macbook Pro 15, 4, 34.0, unpaid, COO7
+OID-3, Dell XPS 17, 2, 11.0, unpaid, COO8
+OID-4, Samsung Galaxy S22, 1, 4.5, unpaid, COO9
+OID-5, Samsung Galaxy S22, 2, 9.0, unpaid, COO7

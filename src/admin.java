@@ -33,6 +33,49 @@ class Admin {
         }
     }
 
+    public static void searchOrder() throws IOException{
+        //Create file object and Scanner object
+        File file = new File("order.txt");
+        File user = new File("customers.txt");
+        Scanner inp = new Scanner(System.in);
+        Scanner scf = new Scanner(file);
+        Scanner scfUser = new Scanner(user);
+
+        //Create function that display all current Customer ID
+        System.out.println("All customer ID currently are:");
+        String line = scfUser.nextLine();
+        while(scfUser.hasNextLine()){
+            String[] arrayLine = line.split(",");
+            line = scfUser.nextLine();
+            System.out.print(arrayLine[0] + ", ");
+        }
+
+        System.out.println("\nInsert customer ID you want to check for order:");
+        String adInp = inp.nextLine();
+
+        String Cline = scf.nextLine();
+        while(true) {
+            String[] arrayCline = Cline.split(", ");
+            if (adInp.equals(arrayCline[5])) {
+                System.out.println("\nOrder ID " + arrayCline[0]
+                        + "\nItem ordered: " + arrayCline[1]
+                        + "\nAmount: " + arrayCline[2]
+                        + "\nTotal Price: " + arrayCline[3]
+                        + "\nStatus: " + arrayCline[4]);
+            }
+                if (scf.hasNextLine()) {
+                    Cline = scf.nextLine();
+                } else {
+                    System.out.println("Found no result at " + adInp +
+                            " (maybe syntax error or customer has no order?)");
+                    break;
+                }
+            }
+        System.out.println("Press enter to return to menu:");
+        String enter = inp.nextLine();
+        Main.menuAdmin();
+        }
+
     @Override
     public String toString(){
         return "Admin username: " + admin_username +

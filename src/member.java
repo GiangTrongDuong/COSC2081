@@ -1,6 +1,9 @@
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class member extends Customer{
     public member(String cid, String name, String address,
@@ -71,7 +74,7 @@ public class member extends Customer{
 
             // record specific data into array and then create brand new data array (new index)
 
-            // 
+            //
             Main.menu();
         }
         else {
