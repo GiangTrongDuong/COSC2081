@@ -49,7 +49,7 @@ public class Main {
         }
 
         String[][] strings = (String[][]) lines.toArray(new String[lines.size()][]);
-
+        System.out.println(Arrays.deepToString(strings));
         System.out.println("Sort by price, please choose between highest to lowest or lowest to highest");
         System.out.println("Input 1 for high to low, 2 for low to high");
         int intInput = sc.nextInt(); //
@@ -92,44 +92,11 @@ public class Main {
 
     }
 
-        static void sortCategory() throws IOException {
-            //create a bufferedReader and user scanner
-            BufferedReader br = new BufferedReader(new FileReader("items.txt"));
-            Scanner sc = new Scanner(System.in);
-            List lines = new ArrayList();
-            //create a 2D arrayList and append each line of the txt file into a sub-array in the 2D array
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                String[] currentLine = line.split(",");
-                lines.add(currentLine);
-            }
-
-            String[][] strings = (String[][]) lines.toArray(new String[lines.size()][]);
-
-            System.out.println("Sort by price, please choose between highest to lowest or lowest to highest");
-            System.out.println("Input 1 for high to low, 2 for low to high");
-            int intInput = sc.nextInt(); //
-
-            int col = 2;
-            //sort the 2D array by price
-            for (int i = 0; i < strings.length; i++) {
-                for (int j = 0; j < strings[i].length; j++) {
-                    float num = Float.parseFloat(strings[i][col]);
-                    System.out.println(num);
-                    float arr[]; //array to store the price
-//                    arr[i] = num;
-//                    Arrays.sort(arr);
-//                    System.out.println(arr[i]);
-
-                }
-            }
-    }
-
     static void sortCart() throws IOException {
         //Create scanner class for input and read from items.txt
         File items = new File("items.txt");
         Scanner scf = new Scanner(items);
         Scanner inp = new Scanner(System.in);
-        BufferedReader br = new BufferedReader(new FileReader(items));
 
         boolean found = false;
         System.out.println("Type in an item category you want to filter" +
@@ -269,7 +236,7 @@ public class Main {
         } else if (ch == 3) {
 
         } else if (ch == 4) {
-
+            product.replacePrice();
         } else if (ch == 5) {
             menu();
         } else {

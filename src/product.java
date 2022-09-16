@@ -1,7 +1,5 @@
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.Scanner;
 
 public class product {
@@ -41,9 +39,59 @@ public class product {
         System.out.println("Insert product category");
         String prodCat = sc.nextLine();
 
-        pw.append("\nI00" + numID + "-" + rand + ", " + prodName + ", " + prodPrice + ", " + prodCat);
+        pw.append("I00").append(String.valueOf(numID)).append("-").append(String.valueOf(rand)).append(", ").append(prodName).append(", ").append(prodPrice).append(", ").append(prodCat);
     }
 
+    public static void replacePrice() throws IOException {
+            File itemF = new File("items.txt");
+            Scanner scFile = new Scanner(new File("items.txt"));
+            Scanner scFiles = new Scanner(new File("items.txt"));
+            Scanner scInp = new Scanner(System.in);
+            String fileContents = "";
+            while(scFile.hasNextLine()){
+                String nextLine = scFile.nextLine();
+                fileContents = fileContents.concat(nextLine+System.lineSeparator());
+            }
+    
+            System.out.println(fileContents);
+            System.out.println("Insert product ID you want to change price");
+            String id = scInp.nextLine();
+            boolean match = false;
+            String lineInFile = scFiles.nextLine();
+
+            while(!match) {
+                String[] newLineArray = lineInFile.split(", ");
+                if (newLineArray[0].equals(id)) {
+                    System.out.println("Insert new price for " + newLineArray[1] + " (number)");
+                    float newPrice = scInp.nextFloat();
+                    String oldPrice = newLineArray[2];
+                    newLineArray[2] = String.valueOf(newPrice);
+                    match = true;
+                    String oldLine = lineInFile;
+                    String newLine = String.join(", ", newLineArray);
+                    fileContents = fileContents.replaceAll(oldLine, newLine);
+                    FileWriter writer = new FileWriter(itemF);
+                    writer.append(fileContents);
+                    writer.flush();
+                    System.out.println("Change price for item with ID " + id + "from " + oldPrice + " to " + newLineArray[2]
+                            + "\nPress enter to return to menu");
+                    String enter = scInp.nextLine();
+                    Main.menuAdmin();
+                } else {
+                    if (scFiles.hasNextLine()) {
+                        lineInFile = scFiles.nextLine();
+                    } else {
+                        System.out.println("Found no item at ID: " + id
+                                + "\nPress enter to return to menu");
+                        String enter = scInp.nextLine();
+                        Main.menuAdmin();
+                    }
+                }
+            }
+
+
+
+    }
     public String toString() {
         return String.format("ID: %d\r\nTitle: %s\r\nPrice %s\r\nCategory %d\r\n",
                 this.ID, this.title, this.price, this.category);

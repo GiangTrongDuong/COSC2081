@@ -1,9 +1,6 @@
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class member extends Customer{
     public member(String cid, String name, String address,
@@ -59,23 +56,77 @@ public class member extends Customer{
         String input = ((sc.nextLine()).trim()).toLowerCase();
         String check = memberTier.toLowerCase();
         if (!input.equals(check)) {
-            System.out.println("You've just chosen " + input.toUpperCase() + " membership package!");
-            switch (input) {
-                case "regular" -> memberTier = "Regular";
-                case "silver" -> memberTier = "Silver";
-                case "gold" -> memberTier = "Gold";
-                case "platinum" -> memberTier = "Platinum";
+            while (true) {
+                if (input.equals("regular")) {
+                   memberTier = "Regular";
+                   System.out.println("You've just chosen " + input.toUpperCase() + " membership package!");
+                   break;
+                }
+                if (input.equals("silver")) {
+                    memberTier = "Silver";
+                    System.out.println("You've just chosen " + input.toUpperCase() + " membership package!");
+                    break;
+                }
+                if (input.equals("gold")) {
+                    memberTier = "Gold";
+                    System.out.println("You've just chosen " + input.toUpperCase() + " membership package!");
+                    break;
+                }
+                if (input.equals("platinum")) {
+                    memberTier = "Platinum";
+                    System.out.println("You've just chosen " + input.toUpperCase() + " membership package!");
+                    break;
+                }
+                else {
+                    System.out.println("Invalid input!");
+                    System.out.println("Please choose appropriate package!");
+                    input = ((sc.nextLine()).trim()).toLowerCase();
+                }
             }
-            // record specific data into array and then change then append back (stay at the same index)
-            // "https://www.youtube.com/watch?v=EfS6i_jAm4g" at 34 mins
 
-            // record all data into array, change it then re-append back (which means delete
-            // all then append)
+            try {
+                // input the file content to the StringBuffer "input"
+                BufferedReader file = new BufferedReader(new FileReader("customers.txt"));
+                List<String> list = new ArrayList<>();
+                String line;
+                String fileContents = "";
+                Scanner scFile = new Scanner(new File("customers.txt"));
 
-            // record specific data into array and then create brand new data array (new index)
+                while(scFile.hasNextLine()){
+                    String nextLine = scFile.nextLine();
+                    fileContents = fileContents.concat(nextLine+System.lineSeparator());
+                }
 
-            //
-            Main.menu();
+                while ((line = file.readLine()) != null) {
+                    list.add(line);
+                }
+                file.close();
+
+//             logic to replace lines in the string (could use regex here to be generic)
+                for (String s : list) {
+                    String[] arr = s.split(",");
+                    String x = (String) Array.get(arr, 5);
+                    String compare1 = x.trim();
+                    String compare2 = username.trim();
+                    if (compare1.equals(compare2)) {
+                        arr[4] = memberTier;
+                        String newLine = String.join(",", arr);
+                        fileContents = fileContents.replaceAll(s, newLine);
+                        FileWriter writer = new FileWriter("customers.txt");
+                        writer.append(fileContents);
+                        writer.flush();
+                        Scanner user = new Scanner(System.in);
+                        System.out.println("Your membership package has been updated!");
+                        System.out.println("\nPress enter to continue");
+                        String enter = user.nextLine();
+                        Main.menu();
+                    } else {
+                        continue;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Problem reading file.");
+            }
         }
         else {
             System.out.println("This is the membership package you have already chosen!" +
