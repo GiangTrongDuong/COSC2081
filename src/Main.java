@@ -234,7 +234,7 @@ public class Main {
         } else if (ch == 2) {
             Admin.searchOrder();
         } else if (ch == 3) {
-
+            orderId.updateOrderStatus();
         } else if (ch == 4) {
             product.replacePrice();
         } else if (ch == 5) {

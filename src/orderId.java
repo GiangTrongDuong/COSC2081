@@ -112,6 +112,73 @@ public class orderId {
             }
         }
 
+        public static void updateOrderStatus() throws IOException{
+            File orderFile = new File("order.txt");
+            Scanner scf = new Scanner(orderFile);
+            Scanner scfScan = new Scanner(orderFile);
+            Scanner inp = new Scanner(System.in);
 
+            boolean match = false;
+            String orderFileLine = scf.nextLine();
+            String fileContents = "";
+
+            while(true){
+                String[] currentLine = orderFileLine.split(", ");
+                fileContents = fileContents.concat(orderFileLine+System.lineSeparator());
+                if(currentLine[4].equals("unpaid")){
+                    System.out.println("Order with Id: " + currentLine[0] + " is currently have the status of unpaid");
+                    if(scf.hasNextLine()) {
+                        orderFileLine = scf.nextLine();
+                    } else {
+                        break;
+                    }
+                } else {
+                    if(scf.hasNextLine()){
+                        orderFileLine = scf.nextLine();
+                    } else{
+                        break;
+                    }
+                }
+
+            }
+
+            System.out.println("Insert id of order you want to change: ");
+            String input = inp.nextLine();
+
+            String lineInFile = scfScan.nextLine();
+            while(!match) {
+                String[] newLineArray = lineInFile.split(", ");
+                if (newLineArray[0].equals(input) && newLineArray[4].equals("unpaid")) {
+                    String oldPrice = newLineArray[2];
+                    newLineArray[4] = "paid";
+                    match = true;
+                    String oldLine = lineInFile;
+                    String newLine = String.join(", ", newLineArray);
+                    fileContents = fileContents.replaceAll(oldLine, newLine);
+                    FileWriter writer = new FileWriter(orderFile);
+                    writer.append(fileContents);
+                    writer.flush();
+                    System.out.println("Change status of order" + newLineArray[0] + " from unpaid to paid"
+                            + "\nPress enter to return to menu");
+                    String enter = inp.nextLine();
+                    Main.menuAdmin();
+                } else if (newLineArray[4].equals("paid")) {
+                    System.out.println("Status is already paid for order " + input
+                            + "\nPress enter to return to menu");
+                    String enter = inp.nextLine();
+                    Main.menuAdmin();
+                }else {
+                    if (scfScan.hasNextLine()) {
+                        lineInFile = scfScan.nextLine();
+                    } else {
+                        System.out.println("Found no item at ID: " + input
+                                + "\nPress enter to return to menu");
+                        String enter = inp.nextLine();
+                        Main.menuAdmin();
+                    }
+                }
+            }
+
+    }
 
 }
