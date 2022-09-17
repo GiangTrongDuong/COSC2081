@@ -7,11 +7,14 @@ class Admin {
     String admin_username = "root";
     private int id;
     private String password;
-    public void Admin(int id, String password){
-        Main admin = new Main();
 
+    public Admin() {
     }
-    
+
+    public Admin(int id, String password) {
+        this.id = id;
+        this.password = password;
+    }
 
     void login() throws IOException{
         //Create Scanner class
@@ -22,7 +25,7 @@ class Admin {
         System.out.println("Insert admin password");
         String inputAdPass = inp.nextLine();
 
-        if(inputAdUser.equals(admin_username) && inputAdPass.equals(admin_password)){
+        if(inputAdUser.trim().equals(admin_username) && inputAdPass.trim().equals(admin_password)){
             System.out.println("Successfully log in as admin, press enter to continue");
             String enter = inp.nextLine();
             Main.menuAdmin();
@@ -56,12 +59,13 @@ class Admin {
         String Cline = scf.nextLine();
         while(true) {
             String[] arrayCline = Cline.split(", ");
-            if (adInp.equals(arrayCline[5])) {
+            if ((adInp.trim()).equals(arrayCline[5])) {
                 System.out.println("\nOrder ID " + arrayCline[0]
                         + "\nItem ordered: " + arrayCline[1]
                         + "\nAmount: " + arrayCline[2]
                         + "\nTotal Price: " + arrayCline[3]
                         + "\nStatus: " + arrayCline[4]);
+                break;
             }
                 if (scf.hasNextLine()) {
                     Cline = scf.nextLine();

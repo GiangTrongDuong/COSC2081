@@ -7,7 +7,7 @@ public class orderId {
     protected int price;
 
     public static void createOrder() throws IOException {
-        //Create and assign file path to values
+        //Create File
         File itemFile = new File("items.txt");
         File orderFile = new File("order.txt");
         //Create print writer to write to order id
@@ -16,22 +16,39 @@ public class orderId {
         Scanner scfItem = new Scanner(itemFile);
         Scanner scfOrder = new Scanner(orderFile);
         Scanner inp = new Scanner(System.in);
-        //Create boolean value to evaluate loop
+        //Create value to evaluate loop
         boolean match = false;
-        //Loop to check for if input match product ID
         while (!match) {
-            //Receiving user input for product ID and amount of product user want to place order
-            System.out.println("Insert ID of the products you want to buy: ");
+            // display items in the shop
+            BufferedReader br = new BufferedReader(new FileReader("items.txt"));
+            Scanner sc = new Scanner(System.in);
+            List lines = new ArrayList();
+            //create a 2D arrayList and append each line of the txt file into a sub-array in the 2D array
+            for (String line = br.readLine(); line != null; line = br.readLine()) {
+                String[] currentLine = line.split(",");
+                lines.add(currentLine);
+            }
+            String[][] strings = (String[][]) lines.toArray(new String[lines.size()][]);
+
+            //loop through the 2D array and display the product on CLI
+            for (int i = 0; i < strings.length; i++) {
+                for (int j = 0; j < strings[i].length; j++) {
+                    System.out.print(strings[i][j] + " | ");
+                }
+                System.out.println("\n");
+            }
+
+            //Requesting for info
+            System.out.println("Insert ID of the products you want to buy (Please be cautious that we" +
+                    " would need you to insert the exact item ID): ");
             String inputID = inp.nextLine();
-            System.out.println("Insert the amount you want to buy (number)");
+
+            System.out.println("Insert the amount you want to buy (number): ");
             int amount = inp.nextInt();
-            //Create String and Array values
             String lineInFile = scfItem.nextLine();
             String[] currentLine = lineInFile.split(", ");
-            //Loop to check for ID
             while (!match) {
-                //If statement to check if input is match
-                if (currentLine[0].equals(inputID)) {
+                if (currentLine[0].trim().equals(inputID.trim())) {
                     match = true;
                     //Automatically create new ID for order
                     int numID = 1;
@@ -40,7 +57,6 @@ public class orderId {
                         numID++;
                     }
 
-                    //Append the newly created order with value to "order.txt" file
                     pw.append("\nOID-" + numID + ", " + currentLine[1] + ", " + amount + ", " +
                             (amount * Float.parseFloat(currentLine[2])) + ", unpaid, " + Main.currentCus.cid);
                     pw.close();
@@ -50,7 +66,7 @@ public class orderId {
                     + "\nTotal Price: " + (amount * Float.parseFloat(currentLine[2])));
 
                     String input = "";
-                    //A pause statement to give the user some space and time to read message above
+
                     while (!"next".equals(input)) {
                         System.out.println("\n Type (next) to return to the menu");
                         input = inp.nextLine();
@@ -63,8 +79,7 @@ public class orderId {
                         lineInFile = scfItem.nextLine();
                         currentLine = lineInFile.split(", ");
                     }else{
-                        System.out.println("Found no item");
-                        //A pause statement to give the user some space and time to read message above
+                        System.out.println("Found no item with ID of \"" + inputID + "\"");
                         System.out.println("Press Enter to return to main menu");
                         String enter = inp.nextLine();
                         Main.menu();
@@ -83,10 +98,8 @@ public class orderId {
         boolean end = false;
         String currentLine = scf.nextLine();
         System.out.println("Active order for account " + Main.currentCus.username);
-        //Loop to loop through all the order in the txt file and see if id of order match customer id
         while (true) {
             String[] currentOrder = currentLine.split(", ");
-            //Check line by line if the element of customer ID in order equal to current logged in customer
             if(Main.currentCus.cid.equals(currentOrder[5])) {
                 System.out.print(currentOrder[0] + ", ");
             }
@@ -102,7 +115,7 @@ public class orderId {
             boolean Continue = true;
             while (Continue) {
                 String[] currentLineList = line.split(", ");
-                if (input.equals(currentLineList[0])) {
+                if (input.trim().equals(currentLineList[0])) {
                     System.out.println("Order ID " + currentLineList[0]
                             + "\nItem ordered: " + currentLineList[1]
                             + "\nAmount: " + currentLineList[2]
@@ -115,7 +128,9 @@ public class orderId {
                     if (scfOD.hasNextLine()) {
                         line = scfOD.nextLine();
                     } else {
-                        Main.menu();
+                        System.out.println("Invalid input! \nPlease insert correctly the order id!");
+                        System.out.println("\n");
+                        viewOrder();
                     }
                 }
             }
@@ -135,7 +150,14 @@ public class orderId {
                 String[] currentLine = orderFileLine.split(", ");
                 fileContents = fileContents.concat(orderFileLine+System.lineSeparator());
                 if(currentLine[4].equals("unpaid")){
-                    System.out.println("Order with Id: " + currentLine[0] + " is currently have the status of unpaid");
+                    System.out.println("Current status of order " + currentLine[0] + " : unpaid");
+                    if(scf.hasNextLine()) {
+                        orderFileLine = scf.nextLine();
+                    } else {
+                        break;
+                    }
+                } else if (currentLine[4].equals("paid")) {
+                    System.out.println("Current status of order " + currentLine[0] + " : paid");
                     if(scf.hasNextLine()) {
                         orderFileLine = scf.nextLine();
                     } else {
@@ -171,7 +193,7 @@ public class orderId {
                             + "\nPress enter to return to menu");
                     String enter = inp.nextLine();
                     Main.menuAdmin();
-                } else if (newLineArray[4].equals("paid")) {
+                } else if (newLineArray[0].equals(input) && newLineArray[4].equals("paid")) {
                     System.out.println("Status is already paid for order " + input
                             + "\nPress enter to return to menu");
                     String enter = inp.nextLine();

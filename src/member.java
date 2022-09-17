@@ -79,8 +79,8 @@ public class member extends Customer{
                 }
                 else {
                     System.out.println("Invalid input!");
-                    System.out.println("Please choose appropriate package!");
-                    input = ((sc.nextLine()).trim()).toLowerCase();
+                    System.out.println("Please choose appropriate package!\n");
+                    registerMemberShip();
                 }
             }
 
@@ -135,10 +135,10 @@ public class member extends Customer{
             String reenter = ((sc.nextLine()).trim()).toLowerCase();
             if (reenter.equals("exit")) {
                 Main.menu();
-            } else if (reenter.equals("enter")) {
+            } else if (reenter.trim().equals("enter")) {
                 registerMemberShip();
             } else {
-                System.out.println("Incorrect input");
+                System.out.println("Incorrect input!\n");
                 registerMemberShip();
             }
         }

@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class product {
     protected String ID;
     protected String title;
-    protected String price;
+    protected float price;
     protected String category;
 
-    public product(String ID, String title, String price, String category){
+    public product(String ID, String title, float price, String category){
         this.ID = ID;
         this.title = title;
         this.price = price;
@@ -39,17 +39,18 @@ public class product {
         System.out.println("Insert product category");
         String prodCat = sc.nextLine();
 
-        pw.append("I00").append(String.valueOf(numID)).append("-").append(String.valueOf(rand)).append(", ").append(prodName).append(", ").append(prodPrice).append(", ").append(prodCat);
+        pw.append("\nI0").append(String.valueOf(numID)).append("-").append(String.valueOf(rand)).append(", ").append(prodName.trim()).append(", ").append(prodPrice.trim()).append(", ").append(prodCat.trim());
+        pw.close();
+        System.out.println("Product has been updated to the database!");
+        Main.menu();
     }
 
     public static void replacePrice() throws IOException {
-        //Create Scanner class
             File itemF = new File("items.txt");
             Scanner scFile = new Scanner(new File("items.txt"));
             Scanner scFiles = new Scanner(new File("items.txt"));
             Scanner scInp = new Scanner(System.in);
             String fileContents = "";
-
             while(scFile.hasNextLine()){
                 String nextLine = scFile.nextLine();
                 fileContents = fileContents.concat(nextLine+System.lineSeparator());
@@ -63,8 +64,8 @@ public class product {
 
             while(!match) {
                 String[] newLineArray = lineInFile.split(", ");
-                if (newLineArray[0].equals(id)) {
-                    System.out.println("Insert new price for " + newLineArray[1] + " (number)");
+                if (newLineArray[0].equals(id.trim())) {
+                    System.out.println("Insert new price for " + "\""  + newLineArray[1] + "\"" + " (number): ");
                     float newPrice = scInp.nextFloat();
                     String oldPrice = newLineArray[2];
                     newLineArray[2] = String.valueOf(newPrice);

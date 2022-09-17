@@ -27,8 +27,8 @@ public class Main {
         }
         //A pause statement to give the user some space and time to read message above
         String input = "";
-        while (!"next".equals(input)) {
-            System.out.println("\n Type (next) to return to the menu");
+        while (!"next".equals(input.trim())) {
+            System.out.println("\nType (next) to return to the menu");
             input = sc.nextLine();
 
         }
@@ -48,45 +48,54 @@ public class Main {
         }
 
         String[][] strings = (String[][]) lines.toArray(new String[lines.size()][]);
-        System.out.println(Arrays.deepToString(strings));
         System.out.println("Sort by price, please choose between highest to lowest or lowest to highest");
         System.out.println("Input 1 for high to low, 2 for low to high");
-        int intInput = sc.nextInt(); //
+        int intInput = sc.nextInt();
+        if (intInput == 1 || intInput == 2) {
+            int col = 2;
 
-        int col = 2;
+            for (int i = 0; i < strings.length; i++) {
+                for (int j = 0; j < strings[i].length; j++) {
+                    String str = strings[i][col];
+                    float num = Float.parseFloat(str);
+                    for (int k = 0; k < strings.length; k++) {
+                        String str2 = strings[k][col];
+                        float num2 = Float.parseFloat(str2);
+                        if (intInput == 1) {
+                            if (num > num2) {
+                                String[] temp = strings[i];
+                                strings[i] = strings[k];
+                                strings[k] = temp;
+                            }
 
+                        } else if (intInput == 2) {
+                            if (num < num2) {
+                                String[] temp = strings[i];
+                                strings[i] = strings[k];
+                                strings[k] = temp;
 
-        for (int i = 0; i < strings.length; i++) {
-            for (int j = 0; j < strings[i].length; j++) {
-
-                String str = strings[i][col];
-                float num = Float.parseFloat(str);
-
-                for (int k = 0; k < strings.length; k++) {
-                    String str2 = strings[k][col];
-                    float num2 = Float.parseFloat(str2);
-                    if (intInput == 1) {
-                        if (num > num2) {
-                            String[] temp = strings[i];
-                            strings[i] = strings[k];
-                            strings[k] = temp;
-
-                                                }
-                    } else if (intInput == 2) {
-                        if (num < num2) {
-                            String[] temp = strings[i];
-                            strings[i] = strings[k];
-                            strings[k] = temp;
-
+                            }
                         }
                     }
-
                 }
             }
 
+            for (String[] string : strings) {
+                System.out.println(Arrays.deepToString(string));
+            }
+
+            Scanner scanner = new Scanner(System.in);
+
+            String input = "";
+            while (!"next".equals(input.trim())) {
+                System.out.println("\nType (next) to return to the menu");
+                input = scanner.nextLine();
+            }
+            menu();
+        } else {
+            System.out.println("Invalid input! \nPlease try again!");
+            sortPrice();
         }
-
-
     }
 
     static void sortCart() throws IOException {
@@ -94,48 +103,49 @@ public class Main {
         File items = new File("items.txt");
         Scanner scf = new Scanner(items);
         Scanner inp = new Scanner(System.in);
+
         //Create boolean for loop evaluation
         boolean found = false;
         boolean stop = false;
         //Take in user input
         System.out.println("Type in an item category you want to filter" +
                 "\nAvailable category: Earbuds, Laptop, Phone, Speaker, Headset");
-        String inputUser = inp.nextLine();
+        String inputUser = (inp.nextLine().trim().toLowerCase());
         String currentLine = scf.nextLine();
+
         //Loop to check if user input match any line
         while (!stop) {
             String[] currentItem = currentLine.split(", ");
             //Return line of item that match categories to user input
-            if (inputUser.equals(currentItem[3])) {
+            if (inputUser.equals(((currentItem[3]).trim()).toLowerCase())) {
                 found = true;
-                System.out.println(currentLine);
+                System.out.println( "\n" + currentLine);
                 if (scf.hasNextLine()) {
                     currentLine = scf.nextLine();
                 } else {
                     stop = true;
-                    System.out.println("\nFinish searching by category, press enter to return to menu");
+                    System.out.println("\nFinish searching by category, insert anything to return to menu");
                     String enter = inp.nextLine();
                     menu();
                 }
             } else {
                 //If no item category match then return message and ask user to exit or redo the function again
                 if(!scf.hasNextLine() && !found) {
-                    System.out.println("\nFound no item category at " + inputUser + ", make sure to insert exactly as show");
-                    //A pause statement to give the user some space and time to read message above
-                    System.out.println("Type 1 to exit, type enter or any key to search again");
-                    int enter = inp.nextInt();
-                    if (enter == 1) {
+                    System.out.println("\nFound no item category at " + inputUser.toUpperCase() + ", make sure to insert exactly as shown");
+                    System.out.println("Type 1 to exit, type (enter) or any key to search again");
+                    String enter = inp.nextLine();
+                    if (enter.equals("1")) {
                         menu();
                     } else {
                         sortCart();
                     }
-                } else if (!scf.hasNextLine() && found == true) {
+                } else if (!scf.hasNextLine() && found) {
                     stop = true;
                     //A pause statement to give the user some space and time to read message above
-                    System.out.println("\nFinish searching by category, press enter to return to menu");
+                    System.out.println("\nFinish searching by category, insert anything to return to menu");
                     String enter2 = inp.nextLine();
                     menu();
-                }else {
+                } else {
                     currentLine = scf.nextLine();
                 }
             }
@@ -146,16 +156,6 @@ public class Main {
 
     static void menu() throws IOException {
         Scanner kb = new Scanner(System.in);
-
-        //Print out the information of Group name, number, student name and ID, lecturer name.
-        System.out.println("COSC2081 GROUP ASSIGNMENT ");
-        System.out.println("STORE ORDER MANAGEMENT SYSTEM");
-        System.out.println("Instructor: Mr. Minh Vu");
-        System.out.println("Group: 12");
-        System.out.println("s3926135, Giang Trong Duong");
-        System.out.println("s3926369, Tran Gia Hung");
-        System.out.println("s3926016, Truong Adam Nhat Anh");
-
         //Check whether user has logged in. If logged in the user will be greeted with message bellow + custom menu.
         if (currentCus.isLoggedIn) {
             System.out.println("\nWelcome " + currentCus.name + ",you are now logged in as " + currentCus.username);
@@ -171,27 +171,32 @@ public class Main {
                     \t7. Create order
                     \t8. Check order status
                     Enter your choice: """);
-            //Read input
-            byte ch = kb.nextByte();
+
             //If statement to check for input then return function accordingly
-            if (ch == 1) {
-                listAll();
-            } else if (ch == 2) {
-                sortPrice();
-            } else if (ch == 3) {
-                sortCart();
-            } else if (ch == 4) {
-                currentMem.viewInfo();
-            } else if (ch == 5) {
-                currentCus.logout();
-            } else if (ch == 6) {
-                currentMem.registerMemberShip();
-            } else if (ch == 7) {
-                orderId.createOrder();
-            } else if (ch == 8) {
-                orderId.viewOrder();
-            } else {
-                System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
+            try {
+                int input = kb.nextInt();
+                if (input == 1) {
+                    listAll();
+                } else if (input == 2) {
+                    sortPrice();
+                } else if (input == 3) {
+                    sortCart();
+                } else if (input == 4) {
+                    currentMem.viewInfo();
+                } else if (input == 5) {
+                    currentCus.logout();
+                } else if (input == 6) {
+                    currentMem.registerMemberShip();
+                } else if (input == 7) {
+                    orderId.createOrder();
+                } else if (input == 8) {
+                    orderId.viewOrder();
+                } else {
+                    System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n=============================== \n");
+                    menu();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n=============================== \n");
                 menu();
             }
 
@@ -206,29 +211,32 @@ public class Main {
                     \t5. Login
                     \t6. Login as Admin
                     Enter your choice: """);
-            //Read input
-            byte ch = kb.nextByte();
-            //If statement to check for input then return function accordingly
-            if (ch == 1) {
-                listAll();
-            } else if (ch == 2) {
-                sortPrice();
-            } else if (ch == 3) {
-                sortCart();
-            } else if (ch == 4) {
-                currentCus.register();
-            } else if (ch == 5) {
-                currentCus.login();
-            } else if (ch == 6) {
-                currentAd.login();
-            } else {
-                System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
-                menu();
+
+
+            try {
+                int ch = kb.nextInt();
+                if (ch == 1) {
+                    listAll();
+                } else if (ch == 2) {
+                    sortPrice();
+                } else if (ch == 3) {
+                    sortCart();
+                } else if (ch == 4) {
+                    currentCus.register();
+                } else if (ch == 5) {
+                    currentCus.login();
+                } else if (ch == 6) {
+                    currentAd.login();
+                } else {
+                    System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n=============================== \n");
+                    menu();
+                }
+            } catch (InputMismatchException ime) {
+                    System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n=============================== \n");
+                    menu();
             }
         }
-
     }
-    //Print out menu interface to console
 
 
     static void menuAdmin() throws IOException {
@@ -241,30 +249,37 @@ public class Main {
                 \t4. Update product price
                 \t5. Logout
                 Enter your choice: """);
-        //Read input
-        byte ch = kb.nextByte();
-        //If statement to check for input then return function accordingly
-        if (ch == 1) {
-            product.addProduct();
-        } else if (ch == 2) {
-            Admin.searchOrder();
-        } else if (ch == 3) {
-            orderId.updateOrderStatus();
-        } else if (ch == 4) {
-            product.replacePrice();
-        } else if (ch == 5) {
+        try {
+            int ch = kb.nextInt();
+            if (ch == 1) {
+                product.addProduct();
+            } else if (ch == 2) {
+                Admin.searchOrder();
+            } else if (ch == 3) {
+                orderId.updateOrderStatus();
+            } else if (ch == 4) {
+                product.replacePrice();
+            } else if (ch == 5) {
+                menu();
+            } else {
+                System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================\n");
+                menuAdmin();
+            }
+        } catch (InputMismatchException ime) {
+            System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================\n");
             menu();
-        } else {
-            System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
-            menuAdmin();
         }
     }
 
 
     public static void main(String[] args) throws IOException {
-        Main program = new Main();
-        program.menu();
-
-
+        System.out.println("COSC2081 GROUP ASSIGNMENT ");
+        System.out.println("STORE ORDER MANAGEMENT SYSTEM");
+        System.out.println("Instructor: Mr. Minh Vu");
+        System.out.println("Group: 12");
+        System.out.println("s3926135, Giang Trong Duong");
+        System.out.println("s3926369, Tran Gia Hung");
+        System.out.println("s3926016, Truong Adam Nhat Anh");
+        menu();
     }
 }

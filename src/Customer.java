@@ -14,7 +14,7 @@ public class Customer {
     public void setLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
     }
-    //Default value for when customer is not logged in using member account
+
     public Customer() {
         this.cid = "none";
         this.name = "none";
@@ -36,6 +36,27 @@ public class Customer {
         this.password = password;
     }
 
+//    public static void reAssign(String s, String s1, String s2, String s3, String s4, String s5, String s6){
+//        return
+//        this.cid = s;
+//        this.name = s1;
+//        this.address = s2;
+//        this.phoneNum = Integer.parseInt(s3);
+//        this.memberTier = s4;
+//        this.username = s5;
+//        this.password = s6;
+//    }
+//
+//    public void reAssign(){
+//        this.cid = "none";
+//        this.name = "none";
+//        this.address = "none";
+//        this.phoneNum = Integer.parseInt("none");
+//        this.memberTier = "none";
+//        this.username = "none";
+//        this.password = "none";
+//    }
+
     void register() throws IOException {
         //create Scanner object for input and reader
         Scanner sc = new Scanner(System.in);
@@ -50,20 +71,25 @@ public class Customer {
 
 
         //Function to take in customer input (via console)
-        System.out.println("Please enter your name");
-        String name = sc.nextLine();
-        System.out.println("Please enter your address");
-        String address = sc.nextLine();
-        System.out.println("Please enter your phone (int number only)");
-        int phone = Integer.parseInt(sc.nextLine());
-        System.out.println("Please enter your username");
-        String userName = sc.nextLine();
-        System.out.println("Please enter your password");
-        String password = sc.nextLine();
-        //PrintWriter function to write to customers.txt
-        PrintWriter pw = new PrintWriter(new FileOutputStream(customer, true));
-        pw.append("\nCOO" + numID + "," + name + "," + address + "," + phone + ",Regular" + ", " + userName + ", " + password);
-        pw.close();
+        try {
+            System.out.println("Please enter your name");
+            String name = sc.nextLine();
+            System.out.println("Please enter your address");
+            String address = sc.nextLine();
+            System.out.println("Please enter your phone (int number only)");
+            int phone = Integer.parseInt(sc.nextLine());
+            System.out.println("Please enter your username");
+            String userName = sc.nextLine();
+            System.out.println("Please enter your password");
+            String password = sc.nextLine();
+            //PrintWriter function to write to customer.txt
+            PrintWriter pw = new PrintWriter(new FileOutputStream(customer, true));
+            pw.append("\nC00" + numID + "," + name + "," + address + "," + phone + ",Regular" + ", " + userName + ", " + password);
+            pw.close();
+        } catch (InputMismatchException | NumberFormatException e) {
+            System.out.println("Invalid input! \nPlease try again");
+            register();
+        }
 
 
         System.out.println("Successfully register");
@@ -81,7 +107,7 @@ public class Customer {
 
 
     boolean login() throws IOException {
-        //Function to take in customer input and  read file "customers.txt"
+        //Function to take in customer input and  read file "customer.txt"
         File file = new File("customers.txt");
         Scanner scf = new Scanner(file);
         Scanner inp = new Scanner(System.in);
@@ -94,49 +120,75 @@ public class Customer {
             System.out.println("Insert username: ");
             String inputUser = inp.nextLine();
             String lineInFile = scf.nextLine();
-            //Check if input match any username, if yes then return password value of it
             while (!userCorrect) {
-                if (lineInFile.contains(inputUser)) {
-                    System.out.println("Correct username");
-                    userCorrect = true;
-                    currentLine = lineInFile;
-                    break;
+                if (lineInFile.contains(inputUser.trim())) {
+                    String[] check = lineInFile.split(",");
+                    if ((inputUser.trim()).equals(check[5].trim())) {
+                        System.out.println("Correct username");
+                        userCorrect = true;
+                        currentLine = lineInFile;
+                        System.out.println("Insert password: ");
+                        String inputPass = inp.nextLine();
+                        //Loop to check for password input of user
+                        if ((check[6].trim()).equals(inputPass.trim())) {
+                            System.out.println("Correct password, logged in");
+                            passCorrect = true;
+                            break;
+                        } else {
+                            System.out.println("Invalid password, try again!");
+                            login();
+                        }
 
+                        break;
+                    } else {
+                        System.out.println("Found no username at " + inputUser);
+                        //A pause statement to give the user some space to read message above
+                        System.out.println("Choose 1 to retry, choose any to exit");
+                        String enter = inp.nextLine();
+                        if (enter.equals("1")) {
+                            login();
+                        } else {
+                            Main.menu();
+                        }
+                    }
                 } else {
                     if(scf.hasNextLine()){
                         lineInFile = scf.nextLine();
                     }else {
                         System.out.println("Found no username at " + inputUser);
                         //A pause statement to give the user some space to read message above
-                        System.out.println("Choose 1 to exit, choose any to retry");
-                        int enter = inp.nextInt();
-                        if (enter == 1) {
-                            Main.menu();
-                        } else {
+                        System.out.println("Choose 1 to retry, choose any to exit");
+                        String enter = inp.nextLine();
+                        if (enter.equals("1")) {
                             login();
+                        } else {
+                            Main.menu();
                         }
                     }
                 }
             }
         }
 
-        System.out.println("Insert password: ");
-        String inputPass = inp.nextLine();
-        //Loop to check for password input of user
-        while (!passCorrect) {
-            if (currentLine.contains(inputPass)) {
-                System.out.println("Correct password, logged in");
-                passCorrect = true;
-                break;
-            } else {
-                System.out.println("Invalid password, try again!");
-                login();
-            }
-        }
+//        System.out.println("Insert password: ");
+//        String inputPass = inp.nextLine();
+//        //Loop to check for password input of user
+//        while (!userCorrect) {
+//            if (currentLine.contains(inputPass)) {
+//                String[] check = currentLine.split(",");
+//                System.out.println(check);
+//                System.out.println("Correct password, logged in");
+//                passCorrect = true;
+//                break;
+//            } else {
+//                System.out.println(check);
+//                System.out.println("Invalid password, try again!");
+//                login();
+//            }
+//        }
 
         //Loop to check if both username and password match
         if(userCorrect && passCorrect){
-            //Return the line from "customers.txt" according to login info and append it into array list
+            //Return the line from "customer.txt" according to login info and append it into array list
             ArrayList<String> UserString = new ArrayList<>(Arrays.asList(currentLine.split(",")));
             new Customer(UserString.get(0), UserString.get(1), UserString.get(2),
                     UserString.get(3), UserString.get(4), UserString.get(5),UserString.get(6));
@@ -159,7 +211,6 @@ public class Customer {
     }
 
     void logout() throws IOException{
-        //reset boolean and value to default (to log out)
         new Customer();
         isLoggedIn = false;
         Main main = new Main();
