@@ -17,7 +17,6 @@ public class Main {
             lines.add(currentLine);
         }
         String[][] strings = (String[][]) lines.toArray(new String[lines.size()][]);
-//        System.out.println(strings);
 
         //loop through the 2D array and display the product on CLI
         for (int i = 0; i < strings.length; i++) {
@@ -26,7 +25,7 @@ public class Main {
             }
             System.out.println("\n");
         }
-        //A pause statement to give the user some space to read message above
+        //A pause statement to give the user some space and time to read message above
         String input = "";
         while (!"next".equals(input)) {
             System.out.println("\n Type (next) to return to the menu");
@@ -59,12 +58,10 @@ public class Main {
 
         for (int i = 0; i < strings.length; i++) {
             for (int j = 0; j < strings[i].length; j++) {
-                // System.out.println(strings[i][j] + " | ");
-                // System.out.println("\n");
 
                 String str = strings[i][col];
                 float num = Float.parseFloat(str);
-                // System.out.println(num);
+
                 for (int k = 0; k < strings.length; k++) {
                     String str2 = strings[k][col];
                     float num2 = Float.parseFloat(str2);
@@ -97,24 +94,34 @@ public class Main {
         File items = new File("items.txt");
         Scanner scf = new Scanner(items);
         Scanner inp = new Scanner(System.in);
-
+        //Create boolean for loop evaluation
         boolean found = false;
+        boolean stop = false;
+        //Take in user input
         System.out.println("Type in an item category you want to filter" +
-                "\nAvailable category: Earbud, Laptop, Phone, Speaker, Headset");
+                "\nAvailable category: Earbuds, Laptop, Phone, Speaker, Headset");
         String inputUser = inp.nextLine();
         String currentLine = scf.nextLine();
-        while (scf.hasNextLine()) {
+        //Loop to check if user input match any line
+        while (!stop) {
             String[] currentItem = currentLine.split(", ");
+            //Return line of item that match categories to user input
             if (inputUser.equals(currentItem[3])) {
                 found = true;
                 System.out.println(currentLine);
                 if (scf.hasNextLine()) {
                     currentLine = scf.nextLine();
+                } else {
+                    stop = true;
+                    System.out.println("\nFinish searching by category, press enter to return to menu");
+                    String enter = inp.nextLine();
+                    menu();
                 }
             } else {
-                currentLine = scf.nextLine();
+                //If no item category match then return message and ask user to exit or redo the function again
                 if(!scf.hasNextLine() && !found) {
                     System.out.println("\nFound no item category at " + inputUser + ", make sure to insert exactly as show");
+                    //A pause statement to give the user some space and time to read message above
                     System.out.println("Type 1 to exit, type enter or any key to search again");
                     int enter = inp.nextInt();
                     if (enter == 1) {
@@ -123,9 +130,13 @@ public class Main {
                         sortCart();
                     }
                 } else if (!scf.hasNextLine() && found == true) {
+                    stop = true;
+                    //A pause statement to give the user some space and time to read message above
                     System.out.println("\nFinish searching by category, press enter to return to menu");
                     String enter2 = inp.nextLine();
                     menu();
+                }else {
+                    currentLine = scf.nextLine();
                 }
             }
         }
@@ -160,7 +171,9 @@ public class Main {
                     \t7. Create order
                     \t8. Check order status
                     Enter your choice: """);
+            //Read input
             byte ch = kb.nextByte();
+            //If statement to check for input then return function accordingly
             if (ch == 1) {
                 listAll();
             } else if (ch == 2) {
@@ -181,7 +194,6 @@ public class Main {
                 System.out.println("===============================" + "\n====Invalid Input, re-enter====" + "\n===============================");
                 menu();
             }
-//                }else if(){
 
         } else {
             //Print out menu interface for user not logged in
@@ -194,8 +206,9 @@ public class Main {
                     \t5. Login
                     \t6. Login as Admin
                     Enter your choice: """);
-
+            //Read input
             byte ch = kb.nextByte();
+            //If statement to check for input then return function accordingly
             if (ch == 1) {
                 listAll();
             } else if (ch == 2) {
@@ -228,7 +241,9 @@ public class Main {
                 \t4. Update product price
                 \t5. Logout
                 Enter your choice: """);
+        //Read input
         byte ch = kb.nextByte();
+        //If statement to check for input then return function accordingly
         if (ch == 1) {
             product.addProduct();
         } else if (ch == 2) {

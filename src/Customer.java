@@ -14,7 +14,7 @@ public class Customer {
     public void setLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
     }
-
+    //Default value for when customer is not logged in using member account
     public Customer() {
         this.cid = "none";
         this.name = "none";
@@ -35,27 +35,6 @@ public class Customer {
         this.username = username;
         this.password = password;
     }
-
-//    public static void reAssign(String s, String s1, String s2, String s3, String s4, String s5, String s6){
-//        return
-//        this.cid = s;
-//        this.name = s1;
-//        this.address = s2;
-//        this.phoneNum = Integer.parseInt(s3);
-//        this.memberTier = s4;
-//        this.username = s5;
-//        this.password = s6;
-//    }
-//
-//    public void reAssign(){
-//        this.cid = "none";
-//        this.name = "none";
-//        this.address = "none";
-//        this.phoneNum = Integer.parseInt("none");
-//        this.memberTier = "none";
-//        this.username = "none";
-//        this.password = "none";
-//    }
 
     void register() throws IOException {
         //create Scanner object for input and reader
@@ -81,7 +60,7 @@ public class Customer {
         String userName = sc.nextLine();
         System.out.println("Please enter your password");
         String password = sc.nextLine();
-        //PrintWriter function to write to customer.txt
+        //PrintWriter function to write to customers.txt
         PrintWriter pw = new PrintWriter(new FileOutputStream(customer, true));
         pw.append("\nCOO" + numID + "," + name + "," + address + "," + phone + ",Regular" + ", " + userName + ", " + password);
         pw.close();
@@ -102,7 +81,7 @@ public class Customer {
 
 
     boolean login() throws IOException {
-        //Function to take in customer input and  read file "customer.txt"
+        //Function to take in customer input and  read file "customers.txt"
         File file = new File("customers.txt");
         Scanner scf = new Scanner(file);
         Scanner inp = new Scanner(System.in);
@@ -115,9 +94,9 @@ public class Customer {
             System.out.println("Insert username: ");
             String inputUser = inp.nextLine();
             String lineInFile = scf.nextLine();
+            //Check if input match any username, if yes then return password value of it
             while (!userCorrect) {
                 if (lineInFile.contains(inputUser)) {
-//                        System.out.println(lineInFile);
                     System.out.println("Correct username");
                     userCorrect = true;
                     currentLine = lineInFile;
@@ -146,7 +125,6 @@ public class Customer {
         //Loop to check for password input of user
         while (!passCorrect) {
             if (currentLine.contains(inputPass)) {
-//                        System.out.println(currentLine);
                 System.out.println("Correct password, logged in");
                 passCorrect = true;
                 break;
@@ -158,7 +136,7 @@ public class Customer {
 
         //Loop to check if both username and password match
         if(userCorrect && passCorrect){
-            //Return the line from "customer.txt" according to login info and append it into array list
+            //Return the line from "customers.txt" according to login info and append it into array list
             ArrayList<String> UserString = new ArrayList<>(Arrays.asList(currentLine.split(",")));
             new Customer(UserString.get(0), UserString.get(1), UserString.get(2),
                     UserString.get(3), UserString.get(4), UserString.get(5),UserString.get(6));
@@ -181,6 +159,7 @@ public class Customer {
     }
 
     void logout() throws IOException{
+        //reset boolean and value to default (to log out)
         new Customer();
         isLoggedIn = false;
         Main main = new Main();

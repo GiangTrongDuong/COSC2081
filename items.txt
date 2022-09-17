@@ -5,3 +5,4 @@ I004-1999, Iphone 13 PM, 7.5, Phone
 I005-2015, Harman Kardon, 3.5, Earbuds
 I006-2014, Marshall, 20.0, Headset
 I007-2021, Marshall Killburn 2, 16.0, Speaker
+I008-2314, Beoplay, 18, Speaker

@@ -43,11 +43,13 @@ public class product {
     }
 
     public static void replacePrice() throws IOException {
+        //Create Scanner class
             File itemF = new File("items.txt");
             Scanner scFile = new Scanner(new File("items.txt"));
             Scanner scFiles = new Scanner(new File("items.txt"));
             Scanner scInp = new Scanner(System.in);
             String fileContents = "";
+
             while(scFile.hasNextLine()){
                 String nextLine = scFile.nextLine();
                 fileContents = fileContents.concat(nextLine+System.lineSeparator());
